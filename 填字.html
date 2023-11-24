@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日文填字遊戲</title>
+  <style>
+button {
+  margin: 5px;
+  padding: 3vw; /* 使用vw來調整字體大小 */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* 添加顏色變化的過渡效果 */
+}
+
+button.correct {
+  background-color: #8aff8a; /* 正確答案的顏色 */
+}
+
+body {
+  text-align: center;
+}
+h1 {
+            color: #007BFF;
+        }
+.speaking {
+            color: #000000; /* 改變為你想要的顏色 */
+        }
+.level {
+  margin: 0 auto;
+  width: 50vw; /* 設定框框的寬度為畫面的50% */
+  height: 50vh; /* 設定框框的高度為畫面的50% */
+  text-align: center;
+  margin-bottom: 20px;
+  border: 2px solid #000;
+  padding: 2vw; /* 使用vw來調整字體大小 */
+  position: relative;
+}
+
+.speaker-icon {
+  position: absolute;
+  top: 1vw; /* 使用vw來調整位置 */
+  right: 1vw; /* 使用vw來調整位置 */
+  font-size: 4vw; /* 使用vw來調整字體大小 */
+  cursor: pointer;
+}
+
+.sentence {
+  font-size: 3vw; /* 使用vw來調整字體大小 */
+  font-weight: bold;
+  margin-bottom: 2vw; /* 使用vw來調整間距 */
+}
+
+.directory {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 2vw; /* 使用vw來調整間距 */
+  background-color: #f0f0f0;
+}
+
+.directory a {
+  display: block;
+  margin-bottom: 1vw; /* 使用vw來調整間距 */
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+.directory a:hover {
+  background-color: #f1f1f1; /* 加亮的顏色 */
+  color: blue; /* 修改文字顏色為藍色 */
+}
+  </style>
+</head>
+<body>
+
+<h1>少即是多‧積沙成塔</h1>
+    <p>學習語言是一個漸進的過程，就像積沙成塔一樣。每天學習一點點，堅持不懈，你會發現這樣的積累最終會形成堅實的語言基礎。</p>
+    <p>不要擔心一開始掌握的不多，重要的是持之以恆。這樣的學習方式可以讓你更輕鬆地吸收知識，並在日常生活中應用所學。</p>
+    <p>記住，少量的學習時間，多次的重複，最終會積累成豐富的語言能力。加油！</p>
+
+<div class="directory" id="directory-container">
+  <!-- 目錄內容將在這裡呈現 -->
+</div>
+
+<div id="game-container">
+  <!-- 遊戲內容將在這裡呈現 -->
+</div>
+
+<script>
+  // 將填字遊戲的JSON資料插入到HTML中
+  const gameData = [
+    {
+      "句子": "私は__に行きます。",
+      "選項": ["学校", "遊園地", "映画館"],
+      "正確答案": "学校",
+      "名稱": "初級關卡"
+    },
+    {
+      "句子": "彼は__で働いています。",
+      "選項": ["オフィス", "レストラン", "病院"],
+      "正確答案": "オフィス",
+      "名稱": "中級關卡"
+    },
+    {
+      "句子": "田中さんは__にいます。",
+      "選項": ["家", "公園", "銀行"],
+      "正確答案": "家",
+      "名稱": "高級關卡"
+    },
+    {
+      "句子": "これは__ですか。",
+      "選項": ["本", "鉛筆", "携帯電話"],
+      "正確答案": "鉛筆",
+      "名稱": "第四關"
+    },
+    {
+      "句子": "私の趣味は__です。",
+      "選項": ["読書", "スポーツ", "料理"],
+      "正確答案": "スポーツ",
+      "名稱": "第五關"
+    },
+    {
+      "句子": "これは__のです。",
+      "選項": ["犬", "猫", "魚"],
+      "正確答案": "犬",
+      "名稱": "第六關"
+    },
+    {
+      "句子": "新しい__を買いたい。",
+      "選項": ["車", "家", "服"],
+      "正確答案": "車",
+      "名稱": "第七關"
+    },
+    {
+      "句子": "彼女は__を弾くのが上手です。",
+      "選項": ["ピアノ", "ギター", "バイオリン"],
+      "正確答案": "ピアノ",
+      "名稱": "第八關"
+    },
+    {
+      "句子": "これは__のですか。",
+      "選項": ["昼間", "夜間", "朝"],
+      "正確答案": "夜間",
+      "名稱": "第九關"
+    },
+    {
+      "句子": "__がありません。",
+      "選項": ["時間", "お金", "友達"],
+      "正確答案": "お金",
+      "名稱": "第十關"
+    }
+  ];
+
+  // 在目錄容器中動態生成目錄元素
+  const directoryContainer = document.getElementById("directory-container");
+
+  gameData.forEach((level, index) => {
+    const directoryItem = document.createElement("a");
+    directoryItem.textContent = `第 ${index + 1} 關 - ${level["名稱"]}`;
+    directoryItem.href = `#level-${index + 1}`;
+    directoryContainer.appendChild(directoryItem);
+  });
+
+  // 在遊戲容器中動態生成遊戲元素
+  const gameContainer = document.getElementById("game-container");
+
+  gameData.forEach((level, index) => {
+    const levelElement = document.createElement("div");
+    levelElement.classList.add("level");
+    levelElement.id = `level-${index + 1}`;
+    levelElement.innerHTML = `
+      <p class="sentence">${level["句子"]}</p>
+      <span class="speaker-icon" onclick="speak('${level["句子"]}')">&#128264;</span>
+      <ul>
+        ${level["選項"].map(option => `<button onclick="checkAnswer(this, '${level["正確答案"]}', '${level["句子"]}')">${option}</button>`).join("")}
+      </ul>
+      <p id="result-${index}" style="display:none;">正確答案：${level["正確答案"]}</p>
+    `;
+    gameContainer.appendChild(levelElement);
+  });
+
+  // 檢查答案的函數
+  function checkAnswer(button, correctAnswer, sentence) {
+    speak(button.textContent); // 發音
+    const resultId = button.parentElement.nextElementSibling.id;
+    const resultElement = document.getElementById(resultId);
+    
+    if (button.textContent === correctAnswer) {
+      resultElement.textContent = "答案正確！";  
+      button.classList.add("correct"); // 添加正確答案的顏色
+    } else {
+      resultElement.textContent = "答案不正確，正確答案是：" + correctAnswer;
+    }
+    resultElement.style.display = "block";
+    const sanitizedText = sentence.replace(/__/g, ''); // 將"__"替換為空白
+  }
+
+  // 發音的函數
+  let isSpeaking = false; // 新增一個變數用來追蹤是否正在發音
+
+  function speak(text) {
+    
+    if (!isSpeaking) { // 檢查是否正在發音
+      const sanitizedText = text.replace(/__/g, ' '); // 將"__"替換為空白
+      const utterance = new SpeechSynthesisUtterance(sanitizedText);
+      utterance.lang = "ja-JP";
+      utterance.rate = 0.8; // 設定為放慢速度，可以調整這個值
+      isSpeaking = true; // 設定為正在發音
+
+      utterance.onend = function() {
+        isSpeaking = false; // 發音結束後設定為未發音
+      };
+      speechSynthesis.speak(utterance);
+    }
+  }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 在這裡進行其他初始化操作
+  isSpeaking = false; // 設定為未發音
+});
+</script>
+
+</body>
+</html>
