@@ -1,3 +1,5 @@
+[網站](https://ianyengithub.github.io/ianyen.github.io/)
+
 # kana
 # 簡介
 這是一個簡單的五十音練習機，用於練習日文片假名（平假名和片假名）及其對應的羅馬拼音。這個網頁應用允許使用者從五十音表中選擇特定的片假名，然後以羅馬拼音形式輸入。應用會給予即時的反饋，告訴使用者是否回答正確。
@@ -22,4 +24,4 @@
 若要添加其他片假名的映射，請在 JavaScript 代碼中的 getRomaji 函數中進行修改。
 希望你享受使用這個五十音練習機，提高你的日文能力！
 
-[ianyenGitHub](https://github.com/ianyenGithub)
+
