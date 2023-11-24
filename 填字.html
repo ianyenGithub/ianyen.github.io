@@ -54,10 +54,19 @@ h1 {
   position: fixed;
   top: 0;
   left: 0;
+height: 100vh; /* 填滿整個畫面的高度 */
   padding: 2vw; /* 使用vw來調整間距 */
   background-color: #f0f0f0;
 }
-
+#toggleDirectoryBtn {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%); /* 垂直居中 */
+    }
+.directory.hidden {
+      transform: translateX(-100%); /* 隱藏目錄 */
+    }
 .directory a {
   display: block;
   margin-bottom: 1vw; /* 使用vw來調整間距 */
@@ -77,6 +86,7 @@ h1 {
     <p>學習語言是一個漸進的過程，就像積沙成塔一樣。每天學習一點點，堅持不懈，你會發現這樣的積累最終會形成堅實的語言基礎。</p>
     <p>不要擔心一開始掌握的不多，重要的是持之以恆。這樣的學習方式可以讓你更輕鬆地吸收知識，並在日常生活中應用所學。</p>
     <p>記住，少量的學習時間，多次的重複，最終會積累成豐富的語言能力。加油！</p>
+<button id="toggleDirectoryBtn" onclick="toggleDirectory()">Toggle Directory</button>
 
 <div class="directory" id="directory-container">
   <!-- 目錄內容將在這裡呈現 -->
@@ -218,6 +228,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // 在這裡進行其他初始化操作
   isSpeaking = false; // 設定為未發音
 });
+function toggleDirectory() {
+    const directoryContainer = document.getElementById("directory-container");
+    directoryContainer.classList.toggle('hidden');
+  }
 </script>
 
 </body>
